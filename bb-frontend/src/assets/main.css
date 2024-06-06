@@ -1,6 +1,9 @@
 :root {
   --primary-bg: #444444;
   --primary-font: #dedede;
+  --required-letter-color: orange;
+  --color-red: red;
+  --color-green: green;
 }
 
 ::-webkit-scrollbar {
@@ -16,5 +19,6 @@
 body {
   background-color: var(--primary-bg);
   color: var(--primary-font);
+  font-family: 'Helvetica', sans-serif;
 }
 
