@@ -1,0 +1,20 @@
+:root {
+  --primary-bg: #444444;
+  --primary-font: #dedede;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--primary-bg);
+  color: var(--primary-font);
+}
+
