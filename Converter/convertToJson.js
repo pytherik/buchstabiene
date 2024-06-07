@@ -11,10 +11,11 @@ async function processLineByLine() {
   });
 
   for await (const line of rl) {
-    wordsArray.push(line);
+    wordsArray.push(line.toUpperCase());
   }
+  fs.writeFile('wordsArray_bak.ts', JSON.stringify(wordsArray), 'utf8', err => {if(err) console.log(err)});
   const targetWords = wordsArray.filter((word) => word.length >= 7 && Array.from(new Set(word.split(''))).length === 7);
-  fs.writeFile('targetWords.js', JSON.stringify(targetWords), 'utf8', err => {if(err) console.log(err)});
+  fs.writeFile('targetWords_bak.ts', JSON.stringify(targetWords), 'utf8', err => {if(err) console.log(err)});
 }
 
 processLineByLine().then();

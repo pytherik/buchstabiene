@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { words } from '@/assets/deutsch';
+import { words } from '@/assets/wordsArray';
 import { targetWords } from '@/assets/targetWords';
-import { ref } from 'vue';
+import { ref} from 'vue';
 import WordCombs from "@/components/WordCombs.vue";
 
 const guess = ref('');
@@ -13,7 +13,7 @@ const includes = ref<string[]>([]);
 const score = ref(0);
 const knownWords = ref<string[]>([]);
 
-randomWord.value = targetWords[Math.floor(Math.random() * targetWords.length)].toUpperCase();
+randomWord.value = targetWords[Math.floor(Math.random() * targetWords.length)];
 targetLetters.value = Array.from(new Set(randomWord.value.split('')));
 shuffle(targetLetters.value);
 requiredLetter.value = targetLetters.value[3];
@@ -22,11 +22,13 @@ collectPossibleIncludes();
 
 function collectPossibleIncludes() {
   words.forEach((word) => {
-    const wordLetters = Array.from(new Set(word.toUpperCase().split('')));
+    const wordLetters = Array.from(new Set(word.split('')));
     const res = wordLetters.some((letter) => !targetLetters.value.includes(letter));
-    if (!res && wordLetters.some((letter) => letter === requiredLetter.value) && !includes.value.includes(word.toUpperCase())) {
+    if (!res &&
+        wordLetters.some((letter) => letter === requiredLetter.value) &&
+        !includes.value.includes(word)) {
       possibleIncludes.value++;
-      includes.value.push(word.toUpperCase());
+      includes.value.push(word);
     }
   });
 }
@@ -34,11 +36,11 @@ function collectPossibleIncludes() {
 function checkWord(e: any) {
   e.preventDefault();
   if (
-    includes.value.includes(guess.value.toUpperCase()) &&
-    !knownWords.value.includes(guess.value.toUpperCase())
+    includes.value.includes(guess.value) &&
+    !knownWords.value.includes(guess.value)
   ) {
     score.value += guess.value.length > 4 ? guess.value.length : 1;
-    knownWords.value.push(guess.value.toUpperCase());
+    knownWords.value.push(guess.value);
     knownWords.value.sort();
     possibleIncludes.value--;
   }
@@ -61,6 +63,10 @@ function addLetterToGuess(letter: string) {
 function removeLetterFromGuess() {
   guess.value = guess.value.slice(0,-1);
 }
+
+function toUpper() {
+  guess.value = guess.value.toUpperCase()
+}
 </script>
 
 <template>
@@ -70,7 +76,7 @@ function removeLetterFromGuess() {
     <WordCombs :targetLetters="targetLetters"  @addLetter="addLetterToGuess" />
     <form @submit="checkWord">
       <label for="guess"></label>
-      <input type="text" placeholder="nächstes Wort" size="12" v-model="guess" />
+      <input type="text" placeholder="nächstes Wort" size="16" v-model="guess" @input="toUpper" />
       <button type="button" class="btn btn-delete" @click="removeLetterFromGuess">«</button>
       <button type="submit" class="btn btn-submit">OK</button>
     </form>
