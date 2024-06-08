@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { words } from '@/assets/wordsArray';
-import { targetWords } from '@/assets/targetWords';
-import { ref} from 'vue';
-import WordCombs from "@/components/WordCombs.vue";
+// import { words } from '@/assets/wordsArray';
+import { tesaurus as words } from '@/assets/tesaurus';
+import { targetWordsTesaurus as targetWords } from '@/assets/targetWordsTesaurus';
+import { ref } from 'vue';
+import WordCombs from '@/components/WordCombs.vue';
 
 const guess = ref('');
 const requiredLetter = ref('');
@@ -24,21 +25,21 @@ function collectPossibleIncludes() {
   words.forEach((word) => {
     const wordLetters = Array.from(new Set(word.split('')));
     const res = wordLetters.some((letter) => !targetLetters.value.includes(letter));
-    if (!res &&
-        wordLetters.some((letter) => letter === requiredLetter.value) &&
-        !includes.value.includes(word)) {
-      possibleIncludes.value++;
+    if (
+      !res &&
+      wordLetters.some((letter) => letter === requiredLetter.value) &&
+      !includes.value.includes(word)
+    ) {
       includes.value.push(word);
     }
   });
+  possibleIncludes.value = includes.value.length;
+  console.log(includes.value);
 }
 
 function checkWord(e: any) {
   e.preventDefault();
-  if (
-    includes.value.includes(guess.value) &&
-    !knownWords.value.includes(guess.value)
-  ) {
+  if (includes.value.includes(guess.value) && !knownWords.value.includes(guess.value)) {
     score.value += guess.value.length > 4 ? guess.value.length : 1;
     knownWords.value.push(guess.value);
     knownWords.value.sort();
@@ -61,29 +62,36 @@ function addLetterToGuess(letter: string) {
 }
 
 function removeLetterFromGuess() {
-  guess.value = guess.value.slice(0,-1);
+  guess.value = guess.value.slice(0, -1);
 }
 
 function toUpper() {
-  guess.value = guess.value.toUpperCase()
+  guess.value = guess.value.toUpperCase();
 }
 </script>
 
 <template>
   <main>
     <div class="playground">
-    <div class="score">{{ score }} Punkte</div>
-    <WordCombs :targetLetters="targetLetters"  @addLetter="addLetterToGuess" />
-    <form @submit="checkWord">
-      <label for="guess"></label>
-      <input type="text" placeholder="nächstes Wort" size="16" v-model="guess" @input="toUpper" />
-      <button type="button" class="btn btn-delete" @click="removeLetterFromGuess">«</button>
-      <button type="submit" class="btn btn-submit">OK</button>
-    </form>
-    <div class="num-words">{{ knownWords.length }}/{{ includes.length }} Wörtern</div>
-    <ul>
-      <li v-for="word in knownWords" :key="word">{{ word }}</li>
-    </ul>
+      <div class="score">{{ score }} Punkte</div>
+      <WordCombs :targetLetters="targetLetters" @addLetter="addLetterToGuess" />
+      <form @submit="checkWord">
+        <label for="guess"></label>
+        <input
+          type="text"
+          placeholder="nächstes Wort"
+          size="16"
+          autofocus
+          v-model="guess"
+          @input="toUpper"
+        />
+        <button type="button" class="btn btn-delete" @click="removeLetterFromGuess">«</button>
+        <button type="submit" class="btn btn-submit">OK</button>
+      </form>
+      <div class="num-words">{{ knownWords.length }}/{{ includes.length }} Wörtern</div>
+      <ul>
+        <li v-for="word in knownWords" :key="word">{{ word }}</li>
+      </ul>
     </div>
   </main>
 </template>
@@ -115,8 +123,8 @@ ul {
 
 li {
   list-style: none;
-  margin: .2rem;
-  padding: 0 .3rem;
+  margin: 0.1rem;
+  padding: 0.1rem 0.3rem 0;
   border: 1px solid var(--required-letter-color);
   border-radius: 2rem;
 }
@@ -136,15 +144,15 @@ input {
 }
 
 .btn-submit {
-  padding: .5rem .4rem;
+  padding: 0.5rem 0.4rem;
   border: 1px solid var(--color-green);
   border-radius: 100%;
 }
 
 .btn-delete {
-  padding: .4rem .7rem;
+  padding: 0.4rem 0.7rem;
   border: 1px solid var(--color-red);
   border-radius: 100%;
-  margin-right: .5rem;
+  margin-right: 0.5rem;
 }
 </style>

@@ -1,4 +1,6 @@
 :root {
+  --nav-background-color: #888;
+  --nav-border-color: #222;
   --primary-bg: #444444;
   --primary-font: #dedede;
   --required-letter-color: orange;
