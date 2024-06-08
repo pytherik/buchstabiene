@@ -88,10 +88,10 @@ function toUpper() {
         <button type="button" class="btn btn-delete" @click="removeLetterFromGuess">«</button>
         <button type="submit" class="btn btn-submit">OK</button>
       </form>
-      <div class="num-words">{{ knownWords.length }}/{{ includes.length }} Wörtern</div>
       <ul>
         <li v-for="word in knownWords" :key="word">{{ word }}</li>
       </ul>
+      <div class="num-words">{{ knownWords.length }}/{{ includes.length }} Wörtern</div>
     </div>
   </main>
 </template>
@@ -105,7 +105,7 @@ function toUpper() {
 }
 
 .score {
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .num-words {
@@ -119,6 +119,7 @@ ul {
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
+  margin-top: 4rem;
 }
 
 li {
@@ -145,6 +146,7 @@ input {
 
 .btn-submit {
   padding: 0.5rem 0.4rem;
+  background-color: var(--color-green);
   border: 1px solid var(--color-green);
   border-radius: 100%;
 }
@@ -154,5 +156,6 @@ input {
   border: 1px solid var(--color-red);
   border-radius: 100%;
   margin-right: 0.5rem;
+  margin-left: 1rem;
 }
 </style>
